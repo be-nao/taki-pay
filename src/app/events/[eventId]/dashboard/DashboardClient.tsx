@@ -52,7 +52,8 @@ export function DashboardClient({ eventId, event, initialParticipants, initialCl
   };
 
   const copyPayUrl = (participantId: string) => {
-    const url = `${window.location.origin}/pay/${eventId}/${participantId}`;
+    const base = process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
+    const url = `${base}/pay/${eventId}/${participantId}`;
     navigator.clipboard.writeText(url);
     setCopiedId(participantId);
     setTimeout(() => setCopiedId(null), 2000);
