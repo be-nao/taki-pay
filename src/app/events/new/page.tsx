@@ -71,7 +71,9 @@ export default function NewEventPage() {
     if (!totalAmount || participants.some((p) => !p.name)) return;
     setSubmitting(true);
     try {
+      console.log("[submit] start");
       const eventTitle = plans.map((p) => p.name).filter(Boolean).join("・") || "割り勘イベント";
+      console.log("[submit] createEvent...");
       const eventId = await createEvent({
         organizer_id: "anonymous",
         title: eventTitle,
@@ -80,11 +82,17 @@ export default function NewEventPage() {
         status: "open",
         ...(paypayUrl ? { paypay_qr_url: paypayUrl } : {}),
       } as Parameters<typeof createEvent>[0]);
+      console.log("[submit] eventId:", eventId);
 
       for (const p of recalculate(participants, totalAmount, roundingUnit)) {
+        console.log("[submit] addParticipant:", p.name);
         await addParticipant({ event_id: eventId, temporary_name: p.name, weight: p.weight, calculated_amount: p.calculatedAmount });
       }
+      console.log("[submit] done, redirecting...");
       router.push(`/events/${eventId}/dashboard`);
+    } catch (e) {
+      console.error("[submit] error:", e);
+      alert(`エラーが発生しました: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSubmitting(false);
     }
