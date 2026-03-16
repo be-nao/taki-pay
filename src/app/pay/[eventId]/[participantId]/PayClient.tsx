@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, CheckCheck, Send, ExternalLink } from "lucide-react";
+import { Send, ExternalLink, CheckCheck } from "lucide-react";
 import { createPaymentClaim } from "@/lib/firestore/payment_claims";
 
 interface Props {
@@ -14,14 +14,10 @@ interface Props {
 }
 
 export function PayClient({ eventTitle, participantName, amount, paypayQrUrl, participantId, alreadyReported }: Props) {
-  const [copied, setCopied] = useState(false);
   const [reported, setReported] = useState(alreadyReported);
   const [reporting, setReporting] = useState(false);
 
-  const handlePayPay = async () => {
-    await navigator.clipboard.writeText(String(amount));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+  const handlePayPay = () => {
     if (paypayQrUrl) {
       window.location.href = paypayQrUrl;
     }
@@ -50,6 +46,7 @@ export function PayClient({ eventTitle, participantName, amount, paypayQrUrl, pa
           <p className="text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
             ¥{amount.toLocaleString()}
           </p>
+          <p className="text-gray-400 text-xs mt-3">上記の金額をPayPayで送金してください</p>
         </div>
       </div>
 
@@ -66,13 +63,12 @@ export function PayClient({ eventTitle, participantName, amount, paypayQrUrl, pa
             onClick={handlePayPay}
             className="w-full btn-primary py-4 text-base flex items-center justify-center gap-2"
           >
-            {copied ? (
-              <><CheckCheck className="w-5 h-5" />金額コピー済み — PayPayへ移動中</>
-            ) : (
-              <><Copy className="w-5 h-5" />金額をコピーしてPayPayで払う<ExternalLink className="w-4 h-4" /></>
-            )}
+            <ExternalLink className="w-5 h-5" />
+            PayPayを開いて送金する
           </button>
-          <p className="text-xs text-gray-400 text-center">¥{amount.toLocaleString()} がコピーされます</p>
+          <p className="text-xs text-gray-400 text-center">
+            PayPayが開いたら <span className="font-bold text-slate-600">¥{amount.toLocaleString()}</span> を入力してください
+          </p>
         </div>
 
         {/* STEP 2 */}
@@ -96,7 +92,6 @@ export function PayClient({ eventTitle, participantName, amount, paypayQrUrl, pa
         </div>
       </div>
 
-      {/* 注意書き */}
       <p className="text-xs text-gray-400 text-center px-4">
         PayPay送金後に「送金完了を報告する」を押してください。幹事が着金を確認して承認します。
       </p>
