@@ -127,3 +127,38 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .card-modern {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20;
+  }
+
+  .input-modern {
+    @apply w-full rounded-xl border border-slate-200 bg-white/70 px-4 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300;
+  }
+
+  .btn-danger {
+    @apply text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg p-1.5 transition-colors duration-200;
+  }
+
+  .tab-active {
+    @apply bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg scale-105;
+  }
+
+  .tab-inactive {
+    @apply text-gray-600 hover:text-gray-800 hover:bg-white/50 hover:shadow-sm;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
